@@ -100,73 +100,31 @@
             </li>
           </ul>
         </div>
+
         <!-- main container -->
         <div class="bg-white border-2 border-green-500 flex flex-col flex-1">
           <!-- task list -->
           <div class="p-5 border-2 flex-1 border-gray-500">
-            <ul class="text-lg">
-              <li>
-                <input type="checkbox" class="mr-2" /> And I'd like to take a
-                minute just sit right there
-              </li>
-
-              <li>
-                <input type="checkbox" class="mr-2" />
-                I'll tell you how I became the prince of a town called Bel-Air
-              </li>
-
-              <li>
-                <input type="checkbox" class="mr-2" />
-                Now this is a story all about how, my life got flipped-turned
-                upside down
-              </li>
-              <li>
-                <input type="checkbox" class="mr-2" /> And I'd like to take a
-                minute just sit right there
-              </li>
-
-              <li>
-                <input type="checkbox" class="mr-2" />
-                I'll tell you how I became the prince of a town called Bel-Air
-              </li>
-
-              <li>
-                <input type="checkbox" class="mr-2" />
-                Now this is a story all about how, my life got flipped-turned
-                upside down
-              </li>
-              <li>
-                <input type="checkbox" class="mr-2" /> And I'd like to take a
-                minute just sit right there
-              </li>
-
-              <li>
-                <input type="checkbox" class="mr-2" />
-                I'll tell you how I became the prince of a town called Bel-Air
-              </li>
-
-              <li>
-                <input type="checkbox" class="mr-2" />
-                Now this is a story all about how, my life got flipped-turned
-                upside down
-              </li>
-            </ul>
+            <ul class="text-lg" id="todo-list"></ul>
           </div>
 
           <!-- add task -->
-          <div class="border-2 border-pink-500 p-5 flex gap-2">
-            <input
-              type="text"
-              placeholder="Write your task here..."
-              class="w-full text-base px-4 focus:outline-2 focus:outline-offset-2 focus:outline-violet-500 py-1.5 border rounded"
-            />
+          <div class="border-2 border-pink-500 p-5">
+            <form id="addTodoForm" class="flex gap-2">
+              <input
+                type="text"
+                placeholder="Write your task here..."
+                class="w-full text-base px-4 focus:outline-2 focus:outline-offset-2 focus:outline-violet-500 py-1.5 border rounded"
+                id="todo-text-input"
+              />
 
-            <button
-              type="submit"
-              class="bg-blue-500 px-3 py-1 text-white rounded"
-            >
-              Add
-            </button>
+              <button
+                type="submit"
+                class="bg-blue-500 px-3 py-1 text-white rounded"
+              >
+                Add
+              </button>
+            </form>
           </div>
         </div>
       </div>
