@@ -35,14 +35,12 @@ function renderTodolist() {
   let todo_list = "";
   todos.forEach(function (todo, index, array) {
     todo_list += `<li data-index=${index} class="bg-gray-50 min-h-[50px] flex items-center py-2 gap-2 px-3.5 rounded shadow group">
-                    <input type="checkbox" class="todo-checkbox peer flex-none" ${
+                    <input type="checkbox" id="todo-checkbox-${index}" class="todo-checkbox peer flex-none" ${
                       todo.is_done ? "checked" : ""
                     } />
-
-                    <span class="peer-checked:line-through peer-checked:text-gray-600 grow">${
-                      todo.text
-                    }</span>
-
+                    <label for="todo-checkbox-${index}" class="peer-checked:line-through peer-checked:text-gray-600 grow select-none">
+                      ${todo.text}
+                    </label>
 
                     <!-- actions -->
                     <div class="flex-none hidden group-hover:flex items-center justify-center gap-2">
