@@ -3,49 +3,66 @@ const todos = [
     text: "And I'd like to take a minute just sit right there",
     is_done: true,
     is_important: false,
+    due_date: null,
   },
   {
     text: "I'll tell you how I became the prince of a town called Bel-Air",
     is_done: false,
     is_important: false,
+    due_date: null,
   },
   {
     text: "Now this is a story all about how, my life got flipped-turned upside down",
     is_done: false,
     is_important: false,
+    due_date: new Date(),
   },
   {
     text: "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia",
     is_done: true,
     is_important: false,
+    due_date: null,
   },
   {
     text: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form",
     is_done: false,
     is_important: true,
+    due_date: null,
   },
 ];
 
 const todoList = document.getElementById("todo-list");
 const addTodoForm = document.getElementById("addTodoForm");
 const todoTextInput = document.getElementById("todo-text-input");
+const todoDueDateInput = document.getElementById("todo-due-date-input");
 const todoIndexInput = document.getElementById("todo-index-input");
 const addTodoBtn = document.getElementById("add-todo-btn");
 const editTodoBtn = document.getElementById("edit-todo-btn");
 
 // render todos {read}
 function renderTodolist() {
-  // console.log(todos);
+  console.log(todos);
 
   let todo_list = "";
   todos.forEach(function (todo, index, array) {
-    todo_list += `<li data-index=${index} class="bg-gray-50 min-h-[50px] flex items-center py-2 gap-2 px-3.5 rounded shadow group">
-                    <input type="checkbox" id="todo-checkbox-${index}" class="todo-checkbox peer flex-none" ${
+    todo_list += `<li data-index=${index} class="bg-gray-50 min-h-[50px] flex items-center py-2 gap-3 px-3.5 rounded shadow group">
+                    <input type="checkbox" id="todo-checkbox-${index}" ${
       todo.is_done ? "checked" : ""
-    } />
-                    <label for="todo-checkbox-${index}" class="peer-checked:line-through peer-checked:text-gray-600 grow select-none">
-                      ${todo.text}
-                    </label>
+    } class="todo-checkbox peer flex-none" />
+                    <div class="w-full">
+                      <div class="mb-2">
+                        <label for="todo-checkbox-${index}" class="peer-checked:line-through peer-checked:text-gray-600 grow select-none">
+                          ${todo.text}
+                        </label>
+                      </div>
+                      <div>
+                      ${
+                        todo.due_date
+                          ? `<span class="bg-pink-400 px-2 py-0.5 rounded-md">${todo.due_date?.toLocaleString()}</span>`
+                          : ""
+                      }
+                      </div>
+                    </div>
 
                     <!-- actions -->
                     <div class="flex-none hidden group-hover:flex items-center justify-center gap-2">
@@ -89,15 +106,23 @@ addTodoForm.addEventListener("submit", function (event) {
 
   const todo_index = todoIndexInput.value;
   const todo_text = todoTextInput.value;
+  const todo_due_date = todoDueDateInput.value;
+  const due_date = new Date(todo_due_date);
+
+  console.log(todo_due_date);
 
   if (todo_index) {
     // edit
     todos[todo_index].text = todo_text;
+    if (due_date) {
+      todos[todo_index].due_date = due_date;
+    }
   } else {
     // create
     todos.push({
       text: todo_text,
       is_done: false,
+      due_date: due_date,
     });
   }
 
@@ -106,6 +131,7 @@ addTodoForm.addEventListener("submit", function (event) {
   // form goes on create state
   todoIndexInput.value = "";
   todoTextInput.value = "";
+  todoDueDateInput.value = "";
 
   toggleSubmitBtns(false);
 });
@@ -135,6 +161,10 @@ todoList.addEventListener("click", function (event) {
 
     todoTextInput.value = todo.text;
     todoIndexInput.value = index;
+
+    const converted_local_due_date = convertDateFormat(todo.due_date);
+    // console.log(converted_local_due_date);
+    todoDueDateInput.value = converted_local_due_date;
 
     toggleSubmitBtns(true);
   }
@@ -203,3 +233,14 @@ document
     });
     todoList.innerHTML = todo_list;
   });
+
+function convertDateFormat(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
