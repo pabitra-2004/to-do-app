@@ -48,7 +48,7 @@ const addTodoBtn = document.getElementById("add-todo-btn");
 const editTodoBtn = document.getElementById("edit-todo-btn");
 const sidebar = document.getElementById("sidebar");
 
-let filter = "all";
+let filter = "today";
 
 // render todos {read}
 function renderTodolist() {
@@ -159,6 +159,7 @@ addTodoForm.addEventListener("submit", function (event) {
       text: todo_text,
       is_done: false,
       due_date: due_date,
+      is_important: filter === "important" ? true : false,
     });
   }
 
@@ -261,3 +262,9 @@ sidebar.addEventListener("click", function (event) {
 
 // initial render
 renderTodolist();
+
+document.querySelectorAll("[sidebar-item]").forEach((el) => {
+  if (el.dataset.filter === filter) {
+    el.classList.add("active");
+  }
+});
