@@ -46,9 +46,12 @@ const todoDueDateInput = document.getElementById("todo-due-date-input");
 const todoIdInput = document.getElementById("todo-id-input");
 const addTodoBtn = document.getElementById("add-todo-btn");
 const editTodoBtn = document.getElementById("edit-todo-btn");
+const sidebar = document.getElementById("sidebar");
+
+let filter = "all";
 
 // render todos {read}
-function renderTodolist(filter = "all") {
+function renderTodolist() {
   console.log(todos);
 
   const filtered_todos = todos.filter((todo) => {
@@ -231,6 +234,30 @@ function toggleSubmitBtns(edit = false) {
     editTodoBtn.classList.replace("inline-flex", "hidden");
   }
 }
+
+sidebar.addEventListener("click", function (event) {
+  // listen only for "sidebar-item" attributes
+  if (event.target.matches("[sidebar-item]")) {
+    // console.log(event.target);
+
+    const target = event.target; // select li [sidebar-item]
+
+    // remove "active" class from others sidebar-item
+    document
+      .querySelectorAll("[sidebar-item]")
+      .forEach((el) => el.classList.remove("active"));
+
+    // add "active" class to sidebar-item clicked..
+    target.classList.add("active");
+
+    // console.log(event.target.dataset.filter);
+
+    // set filter
+    filter = target.dataset.filter;
+    // re-render to-do list
+    renderTodolist();
+  }
+});
 
 // initial render
 renderTodolist();

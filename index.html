@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
-    <div id="app" class="--bg-zinc-900 min-h-screen flex flex-col p-12">
+    <div id="app" class="--bg-zinc-900 min-h-screen flex flex-col">
       <!-- to-do-app -->
       <div class="p-5">
         <h1 class="font-semibold text-5xl">TO-DO App</h1>
@@ -23,9 +23,11 @@
       <div class="flex flex-1 gap-2 h-96 p-2">
         <!-- sidebar -->
         <div class="bg-gray-50 w-60">
-          <ul class="space-y-4 p-3 text-sm font-medium">
+          <ul id="sidebar" class="space-y-4 p-3 text-sm font-medium">
             <li
-              class="bg-blue-500 flex items-center text-white gap-2 rounded p-2"
+              sidebar-item
+              data-filter="today"
+              class="bg-gray-200 flex items-center gap-2 rounded p-2 select-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +35,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="w-5 inline-block"
+                class="w-5 inline-block pointer-events-none"
               >
                 <path
                   stroke-linecap="round"
@@ -43,14 +45,18 @@
               </svg>
               Today
             </li>
-            <li class="bg-gray-200 flex items-center gap-2 rounded p-2">
+            <li
+              sidebar-item
+              data-filter="planned"
+              class="bg-gray-200 flex items-center gap-2 rounded p-2 select-none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="w-5 inline-block"
+                class="w-5 inline-block pointer-events-none"
               >
                 <path
                   stroke-linecap="round"
@@ -61,14 +67,18 @@
 
               Planned
             </li>
-            <li class="bg-gray-200 flex items-center gap-2 rounded p-2">
+            <li
+              sidebar-item
+              data-filter="important"
+              class="bg-gray-200 flex items-center gap-2 rounded p-2 select-none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="w-5 inline-block"
+                class="w-5 inline-block pointer-events-none"
               >
                 <path
                   stroke-linecap="round"
@@ -78,14 +88,18 @@
               </svg>
               Important
             </li>
-            <li class="bg-gray-200 flex items-center gap-2 rounded p-2">
+            <li
+              sidebar-item
+              data-filter="all"
+              class="bg-gray-200 flex items-center gap-2 rounded p-2 select-none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="2"
                 stroke="currentColor"
-                class="w-5 inline-block"
+                class="w-5 inline-block pointer-events-none"
               >
                 <path
                   stroke-linecap="round"
@@ -96,14 +110,15 @@
               All Tasks
             </li>
             <li
-              id="completed-nav"
-              class="bg-gray-200 flex items-center gap-2 rounded p-2"
+              sidebar-item
+              data-filter="completed"
+              class="bg-gray-200 flex items-center gap-2 rounded p-2 select-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                class="w-5 inline-block"
+                class="w-5 inline-block pointer-events-none"
               >
                 <path
                   fill-rule="evenodd"
@@ -123,9 +138,9 @@
         </div>
 
         <!-- main container -->
-        <div class="bg-white flex flex-col flex-1">
+        <div class="bg-white flex flex-col flex-1 pb-10">
           <!-- task list -->
-          <div class="p-5 flex-1">
+          <div class="px-5 flex-1">
             <ul class="text-base space-y-4" id="todo-list"></ul>
           </div>
 
