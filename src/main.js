@@ -1,42 +1,38 @@
 import { convertDateFormat, generateId, getDate } from "./utils";
 
+class Todo {
+  constructor({
+    text,
+    is_done = false,
+    is_important = false,
+    due_date = null,
+  }) {
+    this.id = generateId();
+    this.text = text;
+    this.is_done = is_done;
+    this.is_important = is_important;
+    this.due_date = due_date;
+  }
+}
+
 // initial data
 const todos = [
-  {
-    id: generateId(),
-    text: "And I'd like to take a minute just sit right there",
-    is_done: true,
-    is_important: false,
-    due_date: null,
-  },
-  {
-    id: generateId(),
+  new Todo({ text: "And I'd like to take a minute just sit right there" }),
+  new Todo({
     text: "I'll tell you how I became the prince of a town called Bel-Air",
-    is_done: false,
-    is_important: false,
-    due_date: null,
-  },
-  {
-    id: generateId(),
+  }),
+  new Todo({
     text: "Now this is a story all about how, my life got flipped-turned upside down",
-    is_done: false,
-    is_important: false,
     due_date: new Date(),
-  },
-  {
-    id: generateId(),
+  }),
+  new Todo({
     text: "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia",
     is_done: true,
-    is_important: false,
-    due_date: null,
-  },
-  {
-    id: generateId(),
+  }),
+  new Todo({
     text: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form",
-    is_done: false,
     is_important: true,
-    due_date: null,
-  },
+  }),
 ];
 
 const todoList = document.getElementById("todo-list");
@@ -53,6 +49,16 @@ let filter = "today";
 // render todos {read}
 function renderTodolist() {
   console.log(todos);
+
+  // show | hide on filter
+  if (filter === "completed") {
+    addTodoForm.classList.add("hidden");
+  } else if (filter === "today") {
+    todoDueDateInput.classList.add("hidden");
+  } else {
+    addTodoForm.classList.remove("hidden");
+    todoDueDateInput.classList.remove("hidden");
+  }
 
   const filtered_todos = todos.filter((todo) => {
     if (filter == "all") {
@@ -115,12 +121,25 @@ function renderTodolist() {
                       </button>
 
                       <!-- edit button -->
-                      <button type="button" class="todo-edit-btn hover:bg-yellow-500 hover:text-gray-100 hover:shadow-lg rounded-full text-sm p-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 inline-block select-none pointer-events-none">
-                          <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-                          <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-                        </svg>
-                      </button>
+                      ${
+                        !todo.is_done
+                          ? `<button
+                            type="button"
+                            class="todo-edit-btn hover:bg-yellow-500 hover:text-gray-100 hover:shadow-lg rounded-full text-sm p-1.5"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              class="w-5 h-5 inline-block select-none pointer-events-none"
+                            >
+                              <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                              <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                            </svg>
+                          </button>
+                        `
+                          : ""
+                      }
                       
                       <!-- delete button -->
                       <button type="button" class="todo-delete-btn hover:bg-red-500 hover:text-gray-100 hover:shadow-lg rounded-full text-sm p-1.5">
@@ -141,9 +160,17 @@ addTodoForm.addEventListener("submit", function (event) {
   const todo_id = todoIdInput.value;
   const todo_text = todoTextInput.value;
   const todo_due_date = todoDueDateInput.value;
-  const due_date = new Date(todo_due_date);
 
-  console.log(todo_due_date);
+  const due_date = filter === "today" ? new Date() : new Date(todo_due_date);
+
+  // console.log(todo_due_date, typeof todo_due_date);
+
+  if (filter === "planned" && isNaN(due_date)) {
+    alert("please, input a valid date.");
+    return;
+  }
+
+  // console.log(todo_due_date);
 
   if (todo_id) {
     const todo = todos.find((todo) => todo.id === todo_id);
@@ -154,13 +181,13 @@ addTodoForm.addEventListener("submit", function (event) {
     }
   } else {
     // create
-    todos.push({
-      id: generateId(),
-      text: todo_text,
-      is_done: false,
-      due_date: due_date,
-      is_important: filter === "important" ? true : false,
-    });
+    todos.push(
+      new Todo({
+        text: todo_text,
+        due_date: due_date,
+        is_important: filter === "important" ? true : false,
+      })
+    );
   }
 
   renderTodolist();
