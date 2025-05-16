@@ -43,7 +43,7 @@ export function formatDateTime(date, time = null) {
     // hour > 12 ==> PM
     // 12 ==> PM
     // 24 ==> AM
-    time_str = `, ${hour % 12 || 12}:${minutes} ${a}`;
+    time_str = `, ${hour % 12 || 12}:${minutes} ${a}`; // => ", hh:mm a"
   }
 
   return `${day}/${month}/${year}` + time_str;

@@ -102,7 +102,7 @@ function renderTodolist() {
                       <div>
                       ${
                         todo.due_date
-                          ? `<span class="bg-pink-400 px-2 py-0.5 rounded-md">${formatDateTime(
+                          ? `<span class="bg-pink-400 text-sm px-2 py-0.5 rounded-md">${formatDateTime(
                               todo.due_date,
                               todo.due_time
                             )}</span>`
