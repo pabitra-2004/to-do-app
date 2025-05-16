@@ -1,4 +1,10 @@
-import { convertDateFormat, formatDateTime, generateId, getDate } from "./utils";
+import { renderSidebar } from "./sidebar";
+import {
+  convertDateFormat,
+  formatDateTime,
+  generateId,
+  getDate,
+} from "./utils";
 
 class Todo {
   constructor({
@@ -18,7 +24,7 @@ class Todo {
 }
 
 // initial data
-const todos = [
+export const todos = [
   new Todo({ text: "And I'd like to take a minute just sit right there" }),
   new Todo({
     text: "I'll tell you how I became the prince of a town called Bel-Air",
@@ -47,7 +53,7 @@ const addTodoBtn = document.getElementById("add-todo-btn");
 const editTodoBtn = document.getElementById("edit-todo-btn");
 const sidebar = document.getElementById("sidebar");
 
-let filter = "all";
+export let filter = "all";
 
 // render todos {read}
 function renderTodolist() {
@@ -80,7 +86,7 @@ function renderTodolist() {
     }
   });
 
-  console.log("filtered_todos", filtered_todos);
+  console.log("filtered_todos", filtered_todos, filtered_todos.length);
 
   let todo_list = "";
   filtered_todos.forEach(function (todo, index, array) {
@@ -112,7 +118,7 @@ function renderTodolist() {
                     </div>
 
                     <!-- actions -->
-                    <div class="flex-none hidden group-hover:flex items-center justify-center gap-2">
+                    <div class="flex-none items-center justify-center gap-2">
                       <!-- edit button -->
                       <button type="button" class="todo-important-btn text-sm p-1.5">
                         ${
@@ -158,6 +164,8 @@ function renderTodolist() {
                 </li>`;
   });
   todoList.innerHTML = todo_list;
+
+  renderSidebar();
 }
 
 // add new todo || edit todo {create | edit}
@@ -316,10 +324,5 @@ sidebar.addEventListener("click", function (event) {
 });
 
 // initial render
+renderSidebar();
 renderTodolist();
-
-document.querySelectorAll("[sidebar-item]").forEach((el) => {
-  if (el.dataset.filter === filter) {
-    el.classList.add("active");
-  }
-});
