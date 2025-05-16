@@ -1,4 +1,4 @@
-import { convertDateFormat, generateId, getDate } from "./utils";
+import { convertDateFormat, formatDateTime, generateId, getDate } from "./utils";
 
 class Todo {
   constructor({
@@ -25,7 +25,7 @@ const todos = [
   }),
   new Todo({
     text: "Now this is a story all about how, my life got flipped-turned upside down",
-    due_date: new Date(),
+    due_date: "2025-05-16",
   }),
   new Todo({
     text: "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia",
@@ -102,7 +102,10 @@ function renderTodolist() {
                       <div>
                       ${
                         todo.due_date
-                          ? `<span class="bg-pink-400 px-2 py-0.5 rounded-md">${todo.due_date} ${todo.due_time}</span>`
+                          ? `<span class="bg-pink-400 px-2 py-0.5 rounded-md">${formatDateTime(
+                              todo.due_date,
+                              todo.due_time
+                            )}</span>`
                           : ""
                       }
                       </div>
