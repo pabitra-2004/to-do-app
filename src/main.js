@@ -163,6 +163,10 @@ addTodoForm.addEventListener("submit", function (event) {
 
   const todo_id = todoIdInput.value;
   const todo_text = todoTextInput.value;
+
+  // exit if todo-text is blank
+  if (!todo_text) return;
+
   let todo_due_date = todoDueDateInput.value;
   const todo_due_time = todoDueTimeInput.value;
 
