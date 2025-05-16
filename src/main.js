@@ -6,12 +6,14 @@ class Todo {
     is_done = false,
     is_important = false,
     due_date = null,
+    due_time = null,
   }) {
     this.id = generateId();
     this.text = text;
     this.is_done = is_done;
     this.is_important = is_important;
     this.due_date = due_date;
+    this.due_time = due_time;
   }
 }
 
@@ -39,12 +41,13 @@ const todoList = document.getElementById("todo-list");
 const addTodoForm = document.getElementById("addTodoForm");
 const todoTextInput = document.getElementById("todo-text-input");
 const todoDueDateInput = document.getElementById("todo-due-date-input");
+const todoDueTimeInput = document.getElementById("todo-due-time-input");
 const todoIdInput = document.getElementById("todo-id-input");
 const addTodoBtn = document.getElementById("add-todo-btn");
 const editTodoBtn = document.getElementById("edit-todo-btn");
 const sidebar = document.getElementById("sidebar");
 
-let filter = "today";
+let filter = "all";
 
 // render todos {read}
 function renderTodolist() {
@@ -95,10 +98,11 @@ function renderTodolist() {
                           ${todo.text}
                         </label>
                       </div>
+                      <!-- date time section -->
                       <div>
                       ${
                         todo.due_date
-                          ? `<span class="bg-pink-400 px-2 py-0.5 rounded-md">${todo.due_date?.toLocaleString()}</span>`
+                          ? `<span class="bg-pink-400 px-2 py-0.5 rounded-md">${todo.due_date} ${todo.due_time}</span>`
                           : ""
                       }
                       </div>
@@ -159,7 +163,22 @@ addTodoForm.addEventListener("submit", function (event) {
 
   const todo_id = todoIdInput.value;
   const todo_text = todoTextInput.value;
-  const todo_due_date = todoDueDateInput.value;
+  let todo_due_date = todoDueDateInput.value;
+  const todo_due_time = todoDueTimeInput.value;
+
+  // if(todo_due_time){
+  //   if(!todo_due_date){
+  //     alert("Please select date!")
+  //     return;
+  //   }
+  // }
+
+  if (todo_due_time) {
+    const current_date = getDate(new Date());
+    todo_due_date = todo_due_date || current_date;
+  }
+
+  // console.log(todo_due_date);
 
   const due_date = filter === "today" ? new Date() : new Date(todo_due_date);
 
@@ -184,7 +203,8 @@ addTodoForm.addEventListener("submit", function (event) {
     todos.push(
       new Todo({
         text: todo_text,
-        due_date: due_date,
+        due_date: todo_due_date,
+        due_time: todo_due_time,
         is_important: filter === "important" ? true : false,
       })
     );
@@ -196,6 +216,7 @@ addTodoForm.addEventListener("submit", function (event) {
   todoIdInput.value = "";
   todoTextInput.value = "";
   todoDueDateInput.value = "";
+  todoDueTimeInput.value = "";
 
   toggleSubmitBtns(false);
 });
