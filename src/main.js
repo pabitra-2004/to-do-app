@@ -57,50 +57,45 @@ export let filter = "all";
 
 // render todos {read}
 function renderTodolist() {
-  console.log(todos);
+  const _todos = fetch("http://localhost/to-do-app/backend/api/todos.php")
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
 
-  // show | hide on filter
-  if (filter === "completed") {
-    addTodoForm.classList.add("hidden");
-  } else if (filter === "today") {
-    todoDueDateInput.classList.add("hidden");
-  } else {
-    addTodoForm.classList.remove("hidden");
-    todoDueDateInput.classList.remove("hidden");
-  }
+      const _todos = json;
 
-  const filtered_todos = todos.filter((todo) => {
-    if (filter == "all") {
-      return true;
-    } else if (filter == "today") {
-      const current_date = getDate(new Date());
-      const todo_due_date = getDate(todo.due_date);
+      const filtered_todos = _todos.filter((todo) => {
+        if (filter == "all") {
+          return true;
+        } else if (filter == "today") {
+          const current_date = getDate(new Date());
+          const todo_due_date = getDate(todo.due_date);
 
-      return current_date === todo_due_date;
-    } else if (filter == "planned") {
-      return todo.due_date;
-    } else if (filter == "important") {
-      return todo.is_important;
-    } else if (filter == "completed") {
-      return todo.is_done;
-    }
-  });
+          return current_date === todo_due_date;
+        } else if (filter == "planned") {
+          return todo.due_date;
+        } else if (filter == "important") {
+          return todo.is_important;
+        } else if (filter == "completed") {
+          return todo.is_done;
+        }
+      });
 
-  console.log("filtered_todos", filtered_todos, filtered_todos.length);
+      console.log("filtered_todos", filtered_todos, filtered_todos.length);
 
-  let todo_list = "";
-  filtered_todos.forEach(function (todo, index, array) {
-    todo_list += `<li data-id=${
-      todo.id
-    } class="bg-gray-50 min-h-[50px] flex items-center py-2 gap-3 px-3.5 rounded shadow group">
+      let todo_list = "";
+      filtered_todos.forEach(function (todo, index, array) {
+        todo_list += `<li data-id=${
+          todo.id
+        } class="bg-gray-50 min-h-[50px] flex items-center py-2 gap-3 px-3.5 rounded shadow group">
                     <input type="checkbox" id="todo-checkbox-${index}" ${
-      todo.is_done ? "checked" : ""
-    } class="todo-checkbox flex-none" />
+          todo.is_done ? "checked" : ""
+        } class="todo-checkbox flex-none" />
                     <div class="w-full">
                       <div class="mb-2">
                         <label for="todo-checkbox-${index}" class="${
-      todo.is_done ? "line-through text-gray-600" : ""
-    } grow select-none">
+          todo.is_done ? "line-through text-gray-600" : ""
+        } grow select-none">
                           ${todo.text}
                         </label>
                       </div>
@@ -162,10 +157,23 @@ function renderTodolist() {
                       </button>
                     </div>
                 </li>`;
-  });
-  todoList.innerHTML = todo_list;
+      });
+      todoList.innerHTML = todo_list;
 
-  renderSidebar();
+      renderSidebar();
+    });
+
+  // console.log(_todos);
+
+  // show | hide on filter
+  if (filter === "completed") {
+    addTodoForm.classList.add("hidden");
+  } else if (filter === "today") {
+    todoDueDateInput.classList.add("hidden");
+  } else {
+    addTodoForm.classList.remove("hidden");
+    todoDueDateInput.classList.remove("hidden");
+  }
 }
 
 // add new todo || edit todo {create | edit}
