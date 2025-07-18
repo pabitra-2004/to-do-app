@@ -10,6 +10,13 @@ $sql = "SELECT * FROM todos";
 $result = $conn->query($sql);
 $datas = $result->fetch_all(MYSQLI_ASSOC);
 
+$datas = array_map(function ($data) {
+    $data["is_done"] = (bool) $data["is_done"];
+    $data["is_important"] = (bool) $data["is_important"];
+
+    return $data;
+}, $datas);
+
 // set header
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://localhost:5173");
@@ -18,4 +25,4 @@ header("Access-Control-Allow-Origin: http://localhost:5173");
 $conn->close();
 
 // return data
-echo json_encode($datas);
+echo json_encode($datas, JSON_PRETTY_PRINT);
