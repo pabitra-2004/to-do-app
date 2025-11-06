@@ -57,7 +57,7 @@ export let filter = "all";
 
 // render todos {read}
 function renderTodolist() {
-  const _todos = fetch("http://localhost/to-do-app/backend/api/todos.php")
+  const _todos = fetch("http://to-do-app.test/backend/api/todos.php")
     .then((response) => response.json())
     .then((json) => {
       console.log(json);
